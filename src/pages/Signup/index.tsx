@@ -17,7 +17,6 @@ import { useForm } from 'react-hook-form';
 export function Signup() {
     const {register,handleSubmit,formState:{errors}} = useForm<InputUser>()
     const [errorApi,setErrorApi] = useState<string>("")
-
     const onSubmit = (data:InputUser) => {
         handleSignup(data)
         .then(res => {
