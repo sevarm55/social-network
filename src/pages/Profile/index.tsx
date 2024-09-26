@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 import { handleLogOut, handleverify } from "../../lib/api"
 import { IWideUser } from "../../lib/types"
-import { CustomNavLink } from "../../lib/cutomNavLink"
+import { CustomNavLink } from "../../lib/CutomNavLink"
 
 export const Profile = () => {
     const navigate = useNavigate()
