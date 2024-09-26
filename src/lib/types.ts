@@ -13,6 +13,7 @@ export type InputUser = Omit<IUser, 'id' | 'isPrivate' | 'cover' | 'picture'>
 
 export type InputUserLogin = Pick<IUser, "login" | "password">
 
+
 export interface IResponse {
     status:string
     message?:string
@@ -28,4 +29,17 @@ export interface IWideUser extends IUser {
 export interface IContextType {
     account: IWideUser,
     setAccount: (user:IWideUser) => void
+}
+
+export enum Tab {
+    Profile = 'profile',
+    ChangePassword = 'changePassword',
+    ChangeLogin = 'changeLogin'
+}
+
+export interface InputUpdate {
+    old?: string
+    newpwd?: string
+    login?: string
+    password?: string
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
-import { handleverify } from "../../lib/api"
+import { handleLogOut, handleverify } from "../../lib/api"
 import { IWideUser } from "../../lib/types"
 import { CustomNavLink } from "../../lib/cutomNavLink"
 
@@ -18,6 +18,13 @@ export const Profile = () => {
             })
     },[])
 
+    const logout = () => {
+        handleLogOut()
+        .then(res => {
+            navigate('/login')
+        })
+    }
+
     return account && <>
         <nav>
             <CustomNavLink to='/profile'>Profile</CustomNavLink>
@@ -26,7 +33,7 @@ export const Profile = () => {
             <CustomNavLink to='/profile/posts'>Posts</CustomNavLink>
             <CustomNavLink to='/profile/followers'>Followers</CustomNavLink>
             <CustomNavLink to='/profile/followings'>Followings</CustomNavLink>
-            <button>Logout</button>
+            <button onClick={logout}>Logout</button>
         </nav>
 
         <Outlet 
