@@ -5,11 +5,12 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import { IContextType } from "../../../lib/types"
 import { BASE_URL, DEFAULT_PIC } from "../../../lib/constant";
 import { useRef } from "react";
-import { handlePictureUpload } from "../../../lib/api";
+import { handleCoverUpload, handlePictureUpload } from "../../../lib/api";
 
 export function Dashboard() {
   const {account,setAccount} = useOutletContext<IContextType>()
   const photo = useRef<HTMLInputElement | null>(null)
+  const cover = useRef<HTMLInputElement | null>(null)
   
   const handlePic = () => {
     if(photo.current) {
@@ -26,23 +27,53 @@ export function Dashboard() {
     }
   }
 
+  const hadnleCover = () => {
+    if(cover.current) {
+      const file = cover.current.files?.[0]
+      if(file) {
+        const form = new FormData()
+        form.append('cover',file)
+
+        handleCoverUpload(form)
+        .then(res => {
+          setAccount({...account,cover:res.payload as string})
+        })
+      }
+    }
+  }
+
   return (
     <div className="gradient-custom-2" style={{ backgroundColor: '#9de2ff' }}>
       <MDBContainer className="py-5 h-100">
         <MDBRow className="justify-content-center align-items-center h-100">
           <MDBCol lg="9" xl="7">
             <MDBCard>
-              <div className="rounded-top text-white d-flex flex-row" 
+              <div className="rounded-top text-white d-flex flex-row cover" 
                 style={{
-                  backgroundColor: '#000', height: '200px',
+                  backgroundColor: !account.cover ? "#000" : "", 
+                  backgroundImage: account.cover ?
+                  `url(${BASE_URL}${account.cover})`
+                  : "none",
+                  height: '200px',
                   position:"relative"
                 }}>
-                <IoCloudUploadOutline className="icon" color="white" />
+                <IoCloudUploadOutline
+                  className="icon"
+                  onClick={() => cover.current?.click()} 
+                />
                 <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '150px' }}>
                   <input 
                     type="file"
                     ref={photo}
                     onChange={handlePic}
+                    style={{
+                      display:"none"
+                    }}
+                  />
+                  <input 
+                    type="file" 
+                    ref={cover}
+                    onChange={hadnleCover}
                     style={{
                       display:"none"
                     }}

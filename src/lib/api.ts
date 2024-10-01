@@ -40,3 +40,8 @@ export const handlePictureUpload = async (data:FormData):Promise<IResponse> => {
   const response = await Axios.patch('/profile/upload',data)
   return response.data
 }
+
+export const handleCoverUpload = async (data:FormData):Promise<IResponse> => {
+  const response = await Axios.patch('cover/upload',data)
+  return response.data
+}

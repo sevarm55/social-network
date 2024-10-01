@@ -75,4 +75,21 @@ p {
   right: 20px;
   font-size: 20px;
   cursor: pointer;
+  transition: 0.3s;
+  opacity: 0;
+}
+
+.cover {
+  position: relative;
+}
+
+.photo {
+  cursor: pointer;
+  position: absolute;
+  z-index: -99999;
+}
+
+.cover:hover .icon {
+  transform: scale(1);
+  opacity: 1;
 }

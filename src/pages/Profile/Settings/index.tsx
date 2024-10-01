@@ -5,6 +5,7 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 import { IContextType, InputUpdate, Tab } from '../../../lib/types';
 import { useForm } from 'react-hook-form';
 import { handleUpdateLogin, handleUpdatePassword } from '../../../lib/api';
+import { BASE_URL, DEFAULT_PIC } from '../../../lib/constant';
 
 
 export const Settings = () => {
@@ -81,8 +82,12 @@ export const Settings = () => {
                 {activeTab === 'profile' && (
                   <>
                     <MDBTypography tag="h2">Profile Info</MDBTypography>
-                    <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                    alt="Generic placeholder image" className="mt-0 mb-2 img-thumbnail" fluid style={{ width: '150px', zIndex: '1' }} />
+                    <MDBCardImage 
+                      src={!account.picture ? DEFAULT_PIC : `${BASE_URL}${account.picture}`}
+                      alt="Generic placeholder image" 
+                      className="mt-0 mb-2 img-thumbnail" 
+                      fluid 
+                      style={{ width: '150px', zIndex: '1' }} />
                     <MDBCardText>Name: {account.name}</MDBCardText>
                     <MDBCardText>Surname: {account.surname}</MDBCardText>
                   </>
