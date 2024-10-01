@@ -1,23 +1,64 @@
 import { useOutletContext } from "react-router-dom"
 import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBBtn, MDBTypography } from 'mdb-react-ui-kit';
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 import { IContextType } from "../../../lib/types"
+import { BASE_URL, DEFAULT_PIC } from "../../../lib/constant";
+import { useRef } from "react";
+import { handlePictureUpload } from "../../../lib/api";
 
 export function Dashboard() {
-const {account} = useOutletContext<IContextType>()
+  const {account,setAccount} = useOutletContext<IContextType>()
+  const photo = useRef<HTMLInputElement | null>(null)
+  
+  const handlePic = () => {
+    if(photo.current) {
+      const file = photo.current.files?.[0]
+      if(file) {
+        const form = new FormData()
+        form.append('picture',file)
+
+        handlePictureUpload(form)
+        .then(res => {
+          setAccount({...account, picture:res.payload as string})
+        })
+      }
+    }
+  }
+
   return (
     <div className="gradient-custom-2" style={{ backgroundColor: '#9de2ff' }}>
       <MDBContainer className="py-5 h-100">
         <MDBRow className="justify-content-center align-items-center h-100">
           <MDBCol lg="9" xl="7">
             <MDBCard>
-              <div className="rounded-top text-white d-flex flex-row" style={{ backgroundColor: '#000', height: '200px' }}>
+              <div className="rounded-top text-white d-flex flex-row" 
+                style={{
+                  backgroundColor: '#000', height: '200px',
+                  position:"relative"
+                }}>
+                <IoCloudUploadOutline className="icon" color="white" />
                 <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '150px' }}>
-                  <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                    alt="Generic placeholder image" className="mt-4 mb-2 img-thumbnail" fluid style={{ width: '150px', zIndex: '1' }} />
-                  <MDBBtn outline color="dark" style={{height: '36px', overflow: 'visible'}}>
-                    Edit profile
-                  </MDBBtn>
+                  <input 
+                    type="file"
+                    ref={photo}
+                    onChange={handlePic}
+                    style={{
+                      display:"none"
+                    }}
+                  />
+                  <MDBCardImage 
+                    src={!account.picture ? DEFAULT_PIC : `${BASE_URL}${account.picture}`}
+                    alt="Generic placeholder image" 
+                    className="mt-4 mb-2 img-thumbnail photo" 
+                    fluid 
+                    style={{ width: '150px', zIndex: '1' }}
+                    onClick={(e) => {
+                      if(e.target == e.currentTarget) {
+                        photo.current?.click()
+                      }
+                    }}
+                  />
                 </div>
                 <div className="ms-3" style={{ marginTop: '130px' }}>
                   <MDBTypography tag="h5">{account.name} {account.surname}</MDBTypography>
@@ -31,11 +72,11 @@ const {account} = useOutletContext<IContextType>()
                     <MDBCardText className="small text-muted mb-0">Photos</MDBCardText>
                   </div>
                   <div className="px-3">
-                    <MDBCardText className="mb-1 h5">1026</MDBCardText>
+                    <MDBCardText className="mb-1 h5">{account.followers.length}</MDBCardText>
                     <MDBCardText className="small text-muted mb-0">Followers</MDBCardText>
                   </div>
                   <div>
-                    <MDBCardText className="mb-1 h5">478</MDBCardText>
+                    <MDBCardText className="mb-1 h5">{account.following.length}</MDBCardText>
                     <MDBCardText className="small text-muted mb-0">Following</MDBCardText>
                   </div>
                 </div>
@@ -53,26 +94,6 @@ const {account} = useOutletContext<IContextType>()
                   <MDBCardText className="lead fw-normal mb-0">Recent photos</MDBCardText>
                   <MDBCardText className="mb-0"><a href="#!" className="text-muted">Show all</a></MDBCardText>
                 </div>
-                <MDBRow>
-                  <MDBCol className="mb-2">
-                    <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
-                      alt="image 1" className="w-100 rounded-3" />
-                  </MDBCol>
-                  <MDBCol className="mb-2">
-                    <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
-                      alt="image 1" className="w-100 rounded-3" />
-                  </MDBCol>
-                </MDBRow>
-                <MDBRow className="g-2">
-                  <MDBCol className="mb-2">
-                    <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
-                      alt="image 1" className="w-100 rounded-3" />
-                  </MDBCol>
-                  <MDBCol className="mb-2">
-                    <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
-                      alt="image 1" className="w-100 rounded-3" />
-                  </MDBCol>
-                </MDBRow>
               </MDBCardBody>
             </MDBCard>
           </MDBCol>
