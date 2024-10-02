@@ -1,10 +1,10 @@
 import { useOutletContext } from "react-router-dom"
-import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBBtn, MDBTypography } from 'mdb-react-ui-kit';
+import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography } from 'mdb-react-ui-kit';
 import { IoCloudUploadOutline } from "react-icons/io5";
+import { useRef } from "react";
 
 import { IContextType } from "../../../lib/types"
 import { BASE_URL, DEFAULT_PIC } from "../../../lib/constant";
-import { useRef } from "react";
 import { handleCoverUpload, handlePictureUpload } from "../../../lib/api";
 
 export function Dashboard() {
@@ -99,7 +99,7 @@ export function Dashboard() {
               <div className="p-4 text-black" style={{ backgroundColor: '#f8f9fa' }}>
                 <div className="d-flex justify-content-end text-center py-1">
                   <div>
-                    <MDBCardText className="mb-1 h5">253</MDBCardText>
+                    <MDBCardText className="mb-1 h5">{0}</MDBCardText>
                     <MDBCardText className="small text-muted mb-0">Photos</MDBCardText>
                   </div>
                   <div className="px-3">
@@ -120,10 +120,6 @@ export function Dashboard() {
                     <MDBCardText className="font-italic mb-1">Lives in New York</MDBCardText>
                     <MDBCardText className="font-italic mb-0">Photographer</MDBCardText>
                   </div>
-                </div>
-                <div className="d-flex justify-content-between align-items-center mb-4">
-                  <MDBCardText className="lead fw-normal mb-0">Recent photos</MDBCardText>
-                  <MDBCardText className="mb-0"><a href="#!" className="text-muted">Show all</a></MDBCardText>
                 </div>
               </MDBCardBody>
             </MDBCard>

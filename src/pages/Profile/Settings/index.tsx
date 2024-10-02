@@ -1,21 +1,31 @@
 
-import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardBody, MDBInput, MDBTypography, MDBCardText, MDBListGroup, MDBListGroupItem, MDBCardImage } from 'mdb-react-ui-kit';
+import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardBody,  MDBTypography, MDBCardText, MDBListGroup, MDBListGroupItem, MDBCardImage, MDBSwitch } from 'mdb-react-ui-kit';
 import { useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
-import { IContextType, InputUpdate, Tab } from '../../../lib/types';
-import { useForm } from 'react-hook-form';
-import { handleUpdateLogin, handleUpdatePassword } from '../../../lib/api';
+import { useOutletContext } from 'react-router-dom';
+import { FiLock } from "react-icons/fi";
+import { FiUnlock } from "react-icons/fi";
+
+import { IContextType, Tab } from '../../../lib/types';
 import { BASE_URL, DEFAULT_PIC } from '../../../lib/constant';
 import { EditPassword } from '../../../components/EditPassword';
 import { EditLogin } from '../../../components/EditLogin';
+import { handlePublicPrive } from '../../../lib/api';
 
 
 export const Settings = () => {
-    const { account } = useOutletContext<IContextType>();
+    const { account,setAccount } = useOutletContext<IContextType>();
     const [activeTab, setActiveTab] = useState<Tab>(Tab.Profile);
 
     const handleTabChange = (tab:Tab) => {
       setActiveTab(tab)
+    }
+
+    const handleToggle = () => {
+      handlePublicPrive()
+      .then(res => {
+        setAccount({...account, isPrivate:res.payload as boolean})
+        console.log(res.payload);
+      })
     }
 
     return account && <>
@@ -64,6 +74,17 @@ export const Settings = () => {
                       style={{ width: '150px', zIndex: '1' }} />
                     <MDBCardText>Name: {account.name}</MDBCardText>
                     <MDBCardText>Surname: {account.surname}</MDBCardText>
+                    <hr />
+                    <MDBCardText>PrivacySwitch</MDBCardText>
+                    <div className="private">
+                      <MDBSwitch 
+                        id="privacySwitch"
+                        checked={account.isPrivate} 
+                        onChange={handleToggle}
+                        style={{ marginRight: '10px' }}
+                      />
+                      <span>{account.isPrivate ? <FiLock /> : <FiUnlock />}</span>
+                    </div>
                   </>
                 )}
 

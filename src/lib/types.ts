@@ -43,3 +43,25 @@ export interface InputUpdate {
     login?: string
     password?: string
 }
+
+export interface IPost {
+    id:number
+    title:string
+    picture:string
+}
+
+interface IConnection {
+    blockedMe: boolean
+    didIBlock: boolean
+    following: boolean
+    followsMe: boolean
+    requested: boolean
+}
+
+export interface IAccount extends IUser {
+    available:boolean
+    connection: IConnection
+    posts: IPost[]
+    followers: []
+    following: []
+}
